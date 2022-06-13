@@ -1,4 +1,6 @@
 package ru.netology;
+
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,16 +10,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Scanner;
+
 
 public class MyHttpServer implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Please input port number of HTTP-Server : ");
-        Scanner inn = new Scanner(System.in);
-        int portNumber = inn.nextInt();
-        inn.close();
+
+        int portNumber = 8080;
+        String nameOfParam = "id";
+
         final var validPaths = List.of("/index.html", "/spring.svg", "/spring.png", "/resources.html", "/styles.css", "/app.js", "/links.html", "/forms.html", "/classic.html", "/events.html", "/events.js");
 
         try (final var serverSocket = new ServerSocket(portNumber)) {
@@ -78,10 +80,24 @@ public class MyHttpServer implements Runnable {
                     ).getBytes());
                     Files.copy(filePath, out);
                     out.flush();
+
+                    Request myRequest = new Request(path);
+
+                    myRequest.getQueryParams();
+                    myRequest.getQueryParam(nameOfParam);
+
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+
+                            }
+
+
+                        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+
+
+
     }
-}
+    }
